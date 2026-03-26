@@ -11,7 +11,6 @@
 - [🗂️ 프로젝트 구조](#️-프로젝트-구조)
 - [🚀 최적화 전략 — 4단계](#-최적화-전략--4단계)
 - [🔧 Jenkins CI/CD 파이프라인](#-jenkins-cicd-파이프라인)
-- [▶️ 실행 방법](#️-실행-방법)
 - [🏁 결론](#-결론)
 - [‼️ 트러블슈팅](#️-트러블슈팅)
 
@@ -95,13 +94,15 @@ CMD ["java", "-jar", "build/libs/docker-optimization-0.0.1-SNAPSHOT.jar"]
 ## 📦 이미지 크기 최적화
 
 ### 1️⃣ 베이스 이미지 교체
-
-JAR 실행에는 컴파일러(JDK)가 불필요하므로 JRE로 교체
-
+ 
+기존 jdk를 Alpine 기반으로 교체해 이미지 크기 감소
+ 
 ```dockerfile
 # Before
+FROM eclipse-temurin:17-jdk        # Ubuntu 기반
  
 # After
+FROM eclipse-temurin:17-jdk-alpine  # Alpine 기반
 ```
 
 <img width="2250" height="484" alt="image" src="https://github.com/user-attachments/assets/bf6f8ac5-cd1a-48ba-866b-dc0607b8b5a2" />
@@ -115,8 +116,7 @@ JAR 실행에는 컴파일러(JDK)가 불필요하므로 JRE로 교체
 |--|--------|-------|
 | 이미지 크기 | 832MB | 746B |
 
-
-<hr />
+<br />
 
 ### 2️⃣ 멀티스테이지 빌드
 
@@ -178,7 +178,7 @@ Jenkinsfile
 #### ➡️ 멀티 스테이지 빌드를 진행한 경우와 이미지 용량 크기는 동일하나, **docker push 속도 27s 감소**
 
 
-<hr />
+<br />
 
 ### 4️⃣ 레이어 캐시 최적화
 
@@ -193,7 +193,7 @@ Docker는 레이어 변경 시 이하 레이어를 전부 재실행
 
 <img width="2238" height="476" alt="image" src="https://github.com/user-attachments/assets/86e5a5bd-a66b-4012-9be6-037237314611" />
 
-코드 변경 없이 재빌드를 했을 때, 캐싱되어 있던 기존 레이어를 재사용하므로 **빌드 속도 약 30배 증가 (1m 32s -> 3s)**
+#### ➡️ 코드 변경 없이 재빌드를 했을 때, 캐싱되어 있던 기존 레이어를 재사용하므로 **빌드 속도 약 30배 증가 (1m 32s -> 3s)**
 
 
 
@@ -226,6 +226,8 @@ GitHub Push (webhook)
 
 ### Stage별 상세 동작
 
+<br />
+
 #### Stage 2 — Build JAR
 ```bash
 chmod +x gradlew
@@ -236,6 +238,7 @@ echo "▶ Gradle 빌드 소요 시간: $((END - START))초"
 ```
 빌드 성공 시 `build/libs/*.jar` 파일 크기 자동 출력
 
+<br />
 
 #### Stage 3 — Docker Build
 ```bash
@@ -252,6 +255,8 @@ docker images ${IMAGE_NAME}:${IMAGE_TAG} \
     --format 'table {{.Repository}}\t{{.Tag}}\t{{.Size}}'
 ```
 
+<br />
+
 #### Stage 4 — Docker Push
 ```bash
 # Jenkins Credentials에 저장된 Docker Hub 계정으로 로그인
@@ -259,6 +264,8 @@ echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 docker push ${IMAGE_NAME}:${IMAGE_TAG}
 docker push ${IMAGE_NAME}:latest
 ```
+
+<br />
 
 #### Stage 5 — Deploy
 ```bash
@@ -277,6 +284,8 @@ docker run -d \
 ```
 
 > DB 계정 정보는 Jenkins Credentials에 저장 후 주입 (`db-username`, `db-password`)
+
+<br />
 
 ### Jenkins 환경 구성
 
