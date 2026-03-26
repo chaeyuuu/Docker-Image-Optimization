@@ -44,17 +44,14 @@
 
 
 ## 🗂️ 프로젝트 구조
-> 실제 프로젝트 구성에 따라 수정
 ```
 docker-optimization-project/
-├── Dockerfile                  # 최종 최적화 이미지 (Step 4)
+├── Dockerfile                  # 최종 최적화 이미지 (Step 4: 레이어 캐시 최적화)
 ├── docker/
-│   ├── Dockerfile.naive        # 최적화 전 베이스라인
-│   ├── Dockerfile.step1        # Step 1: 베이스 이미지 교체
-│   ├── Dockerfile.step2        # Step 2: 멀티스테이지 빌드
-│   └── Dockerfile.step3        # Step 3: .dockerignore 적용
+│   ├── dockerfile.naive        # 최적화 전 베이스라인
+│   ├── dockerfile.step01       # Step 1: 베이스 이미지 교체
+│   └── dockerfile.step03       # Step 2: 멀티 스테이지 적용
 ├── .dockerignore               # 빌드 컨텍스트 필터링
-├── build.gradle
 └── src/
 ```
 
