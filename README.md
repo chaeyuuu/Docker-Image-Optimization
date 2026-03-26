@@ -166,11 +166,7 @@ docker-compose*
 Jenkinsfile
 ```
 
-<img width="2000" height="402" alt="image" src="https://github.com/user-attachments/assets/10ee1117-d037-440d-8c62-28de700c448c" />
-
-<br/>
-
-<img width="120" height="480" alt="image" src="https://github.com/user-attachments/assets/67812937-1456-4794-bc76-838625f0d844" />
+<img width="2238" height="476" alt="image" src="https://github.com/user-attachments/assets/81ed1665-4dd0-4ec0-a18b-b43b63721a1e" />
 
 
 멀티 스테이지 빌드를 진행한 경우와 이미지 용량 크기는 동일하나, **docker push 속도 27s 감소**
@@ -289,12 +285,6 @@ docker run -d \
 
 > `/var/run/docker.sock` 마운트로 Jenkins 컨테이너 내부에서 `docker build` 실행 가능
 
-
-<br />
-
-## ▶️ 실행 방법
-
-> 실행 방법 작성
 
 
 <br />
