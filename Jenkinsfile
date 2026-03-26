@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_ID  = "your-dockerhub-id"   // ← 본인 ID로 변경
+        DOCKER_HUB_ID  = "caminobelllo"
         IMAGE_NAME     = "${DOCKER_HUB_ID}/docker-optimization"
         IMAGE_TAG      = "${BUILD_NUMBER}"
         CONTAINER_NAME = "spring-app"
