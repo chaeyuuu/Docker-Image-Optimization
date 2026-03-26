@@ -42,6 +42,7 @@ pipeline {
                     file(credentialsId: 'application-yml', variable: 'APP_YML')
                 ]) {
                     sh '''
+                        mkdir -p src/main/resources
                         cp $APP_YML src/main/resources/application.yml
 
                         START=$(date +%s)
