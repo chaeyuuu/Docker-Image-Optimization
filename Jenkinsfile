@@ -38,16 +38,22 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo "=== [3/5] Docker 이미지 빌드 ==="
-                sh '''
-                    START=$(date +%s)
-                    docker build \
-                        -t ${IMAGE_NAME}:${IMAGE_TAG} \
-                        -t ${IMAGE_NAME}:latest \
-                        -f Dockerfile .
-                    END=$(date +%s)
-                    echo "▶ Docker 빌드 소요 시간: $((END - START))초"
-                '''
-                sh "docker images ${IMAGE_NAME}:${IMAGE_TAG} --format 'table {{.Repository}}\\t{{.Tag}}\\t{{.Size}}'"
+                withCredentials([
+                    file(credentialsId: 'application-yml', variable: 'APP_YML')
+                ]) {
+                    sh '''
+                        cp $APP_YML src/main/resources/application.yml
+
+                        START=$(date +%s)
+                        docker build \
+                            -t ${IMAGE_NAME}:${IMAGE_TAG} \
+                            -t ${IMAGE_NAME}:latest \
+                            -f Dockerfile .
+                        END=$(date +%s)
+                        echo "▶ Docker 빌드 소요 시간: $((END - START))초"
+                    '''
+                    sh "docker images ${IMAGE_NAME}:${IMAGE_TAG} --format 'table {{.Repository}}\\t{{.Tag}}\\t{{.Size}}'"
+                }
             }
         }
 
