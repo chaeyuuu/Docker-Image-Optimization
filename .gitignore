@@ -44,7 +44,5 @@ out/
 !cd.yml
 *.properties
 
-!**/src/main/resources/applicatiion.yaml
-
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
