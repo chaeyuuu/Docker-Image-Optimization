@@ -1,16 +1,7 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY ../gradlew .
-COPY ../gradle gradle
-COPY ../build.gradle settings.gradle ./
-RUN chmod +x gradlew
-RUN ./gradlew dependencies --no-daemon
-COPY ../src src
+COPY . .
 COPY application.yml src/main/resources/application.yml
-RUN ./gradlew bootJar --no-daemon -x test
-
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-COPY --from=builder /app/build/libs/*.jar app.jar
+RUN chmod +x ./gradlew && ./gradlew build -x test
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
