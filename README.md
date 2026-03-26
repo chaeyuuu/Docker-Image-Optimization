@@ -186,9 +186,17 @@ Docker는 레이어 변경 시 이하 레이어를 전부 재실행
 → 변경 빈도가 낮은 의존성을 위쪽, 소스코드를 아래쪽 레이어에 배치
 
 ```dockerfile
-# Before:
- 
-# After:
+# Before: 소스 변경 시 의존성 전체 재다운로드
+COPY . .
+RUN ./gradlew build
+
+# After: 의존성 레이어 캐시 유지
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+RUN ./gradlew dependencies --no-daemon
+COPY src src
+RUN ./gradlew bootJar --no-daemon -x test
 ```
 
 <img width="2238" height="476" alt="image" src="https://github.com/user-attachments/assets/86e5a5bd-a66b-4012-9be6-037237314611" />
