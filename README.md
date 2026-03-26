@@ -207,7 +207,7 @@ RUN ./gradlew bootJar --no-daemon -x test
 
 ## 🔧 Jenkins CI/CD 파이프라인
 
-### 파이프라인 흐름
+### ✔️ 파이프라인 흐름
 
 ```
 GitHub Push (webhook)
@@ -227,9 +227,8 @@ GitHub Push (webhook)
 
 
 
-### Stage별 상세 동작
+### ✏️ Stage별 상세 동작
 
-<br />
 
 #### Stage 2 — Build JAR
 ```bash
