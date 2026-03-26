@@ -336,4 +336,30 @@ docker run -d \
 
 
 ## ‼️ 트러블슈팅
-> 트러블 슈팅 작성
+### 1. application.yml 복사 권한 오류
+ 
+```
+cp: cannot create regular file './application.yml': Permission denied
+```
+ 
+**원인**
+ 
+이전 빌드에서 root 권한으로 `application.yml` 이 생성된 후 jenkins 유저가 덮어쓸 수 없는 상태
+ 
+```
+Jenkins 워크스페이스 파일 소유권
+application.yml → root 소유 (이전 빌드에서 생성)
+jenkins 유저    → 쓰기 권한 없음 → cp 명령어 실패
+```
+ 
+**해결**
+ 
+```bash
+# 1. 워크스페이스 경로 확인
+docker exec jenkins ls /var/jenkins_home/workspace/
+ 
+# 2. 워크스페이스 전체 권한 변경
+docker exec -u root jenkins chmod -R 777 /var/jenkins_home/workspace/docker-optimization/
+ 
+# 3. Jenkins에서 다시 빌드 실행
+```
