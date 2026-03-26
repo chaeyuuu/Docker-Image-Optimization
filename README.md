@@ -289,24 +289,6 @@ docker run -d \
 
 <br />
 
-### Jenkins 환경 구성
-
-Jenkins를 Docker 컨테이너로 실행하고 호스트의 Docker를 공유
-
-```bash
-docker run -d \
-  --name jenkins \
-  -p 8080:8080 \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  jenkins/jenkins:lts
-```
-
-> `/var/run/docker.sock` 마운트로 Jenkins 컨테이너 내부에서 `docker build` 실행 가능
-
-
-
-<br />
-
 
 
 ## 🏁 결론
