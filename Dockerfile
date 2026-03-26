@@ -1,11 +1,11 @@
 FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle settings.gradle ./
+COPY ../gradlew .
+COPY ../gradle gradle
+COPY ../build.gradle settings.gradle ./
 RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
-COPY src src
+COPY ../src src
 COPY application.yml src/main/resources/application.yml
 RUN ./gradlew bootJar --no-daemon -x test
 
