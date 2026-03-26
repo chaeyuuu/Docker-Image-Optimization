@@ -84,15 +84,13 @@ pipeline {
                             --restart unless-stopped \
                             -p ${APP_PORT}:8080 \
                             -e DB_HOST=172.17.0.1 \
+                            -e DB_PORT=3307 \
                             -e DB_USERNAME=${DB_USER} \
                             -e DB_PASSWORD=${DB_PASS} \
                             ${IMAGE_NAME}:${IMAGE_TAG}
-
-                        echo "▶ 배포 완료: ${IMAGE_NAME}:${IMAGE_TAG}"
                     '''
                 }
             }
-        }
 
         stage('Cleanup') {
             steps {
