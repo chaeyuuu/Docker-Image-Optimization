@@ -109,6 +109,8 @@ FROM eclipse-temurin:17-jdk-alpine  # Alpine 기반
 <br />
 
 
+#### ➡️ 베이스 이미지 교체 전 후 이미지 크기 비교
+
 |  | Before | After |
 |--|--------|-------|
 | 이미지 크기 | 832MB | 746B |
@@ -200,11 +202,7 @@ RUN ./gradlew bootJar --no-daemon -x test
 
 #### ➡️ 코드 변경 없이 재빌드를 했을 때, 캐싱되어 있던 기존 레이어를 재사용하므로 **빌드 속도 약 30배 증가 (1m 32s -> 3s)**
 
-
-
 <br />
-
-
 
 
 ## 🔧 Jenkins CI/CD 파이프라인
