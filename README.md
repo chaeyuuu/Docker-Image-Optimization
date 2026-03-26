@@ -2,11 +2,19 @@
 > 빌드 속도/이미지 크기/운영 관점을 고려한 Docker 이미지 최적화 전략을 4단계로 적용하고
 > Jenkins CI/CD 파이프라인으로 단계별 수치를 자동 측정합니다.
 
+<br />
+
+---
+
 ## 👥 멤버
 
 | <img src="https://github.com/caminobelllo.png" width="160px"> | <img src="https://github.com/Sungjun24s.png" width="160px"> | <img src="https://github.com/chaeyuuu.png" width="160px"> |
 |:-------------------------------------------------------------:|:-----------------------------------------------------------:|:---------------------------------------------------------:|
 |    __서가영<br>[@caminobelllo](https://github.com/caminobelllo)__    |          __박성준<br>[@Sungjun24s](https://github.com/Sungjun24s)__          |      __이채유<br>[@chaeyuuu](https://github.com/chaeyuuu)__      |
+
+<br />
+
+---
 
 ## 📋 목차
 
@@ -19,9 +27,17 @@
 - [🏁 결론](#-결론)
 - [‼️ 트러블슈팅](#️-트러블슈팅)
 
+<br />
+
+---
 
 ## ⚙️ 기술 스택
 > 스택 기술
+
+
+<br />
+
+---
 
 ## 🗂️ 프로젝트 구조
 > 실제 프로젝트 구성에 따라 수정
@@ -38,6 +54,11 @@ docker-optimization-project/
 └── src/
 ```
 
+
+<br />
+
+---
+
 ## 🚀 최적화 전략 — 4단계
 
 ### 📌 최적화 전 (Naive)
@@ -52,6 +73,7 @@ RUN ./gradlew build -x test
 CMD ["java", "-jar", "build/libs/app.jar"]
 ```
 
+<br />
 
 ### 1️⃣ 베이스 이미지 교체
 
@@ -67,6 +89,8 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 |--|--------|-------|
 | 베이스 이미지 크기 |||
 
+
+<br />
 
 ### 2️⃣ 멀티스테이지 빌드
 
@@ -84,6 +108,8 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 | 이미지 크기 |  |  |
 | 최종 이미지 내용 |  |  |
 
+
+<br />
 
 ### 3️⃣ .dockerignore 추가
 
@@ -106,6 +132,8 @@ Jenkinsfile
 | 불필요한 캐시 무효화 | 발생 | 방지 |
 
 
+<br />
+
 ### 4️⃣ 레이어 캐시 최적화
 
 Docker는 레이어 변경 시 이하 레이어를 전부 재실행
@@ -122,6 +150,12 @@ Docker는 레이어 변경 시 이하 레이어를 전부 재실행
 | | Before | After |
 |--|------|------|
 | 소스 변경 시 재빌드 |  |  |
+
+
+
+<br />
+
+---
 
 
 ## 🔧 Jenkins CI/CD 파이프라인
@@ -143,6 +177,8 @@ GitHub Push (webhook)
 │  Stage 6. Cleanup     불필요한 이미지 정리           │
 └───────────────────────────────────────────────────┘
 ```
+
+<br />
 
 ### Stage별 상세 동작
 
@@ -197,6 +233,8 @@ docker run -d \
 
 > DB 계정 정보는 Jenkins Credentials에 저장 후 주입 (`db-username`, `db-password`)
 
+<br />
+
 ### Jenkins 환경 구성
 
 Jenkins를 Docker 컨테이너로 실행하고 호스트의 Docker를 공유
@@ -211,9 +249,17 @@ docker run -d \
 
 > `/var/run/docker.sock` 마운트로 Jenkins 컨테이너 내부에서 `docker build` 실행 가능
 
+
+<br />
+
 ## ▶️ 실행 방법
 
 > 실행 방법 작성
+
+
+<br />
+
+---
 
 
 ## 🏁 결론
@@ -243,6 +289,11 @@ docker run -d \
 
 > 빌드 완료 후 실제 수치로 채울 것
 
+
+
+<br />
+
+---
 
 ## ‼️ 트러블 슈팅
 > 트러블 슈팅 작성
