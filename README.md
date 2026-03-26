@@ -32,7 +32,15 @@
 ---
 
 ## ⚙️ 기술 스택
-> 스택 기술
+
+### 구동 환경
+<img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=blue"> <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
+
+
+<br/>
+
+### 소스 코드
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
 
 <br />
@@ -60,6 +68,9 @@ docker-optimization-project/
 ---
 
 ## 🚀 최적화 전략 — 4단계
+> 이미지 크기를 최적화하는 방식 / 속도 최적화 방식 두 가지로 나누어 진행하였습니다.
+
+<br />
 
 ### 📌 최적화 전 (Naive)
 
@@ -73,7 +84,19 @@ RUN ./gradlew build -x test
 CMD ["java", "-jar", "build/libs/docker-optimization-0.0.1-SNAPSHOT.jar"]
 ```
 
+#### 📈 빌드 결과
+<img width="2284" height="494" alt="image" src="https://github.com/user-attachments/assets/99e132bf-b196-407c-b0d5-deea824087a9" />
+<img width="880" height="81" alt="image" src="https://github.com/user-attachments/assets/37df00c3-2849-4d8c-a18f-2190b48c2bf7" />
+
 <br />
+<br />
+
+
+**최적화 전 docker image 크기 : 832MB**
+
+
+<br />
+
 
 ## 📦 이미지 크기 최적화
 
@@ -87,9 +110,15 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 # After
 ```
 
+<img width="2250" height="484" alt="image" src="https://github.com/user-attachments/assets/bf6f8ac5-cd1a-48ba-866b-dc0607b8b5a2" />
+<img width="887" height="67" alt="image" src="https://github.com/user-attachments/assets/3440a09d-af20-4f83-9dba-faa07d61e986" />
+
+
+<br />
+
 | | Before | After |
 |--|--------|-------|
-| 베이스 이미지 크기 | | |
+| 베이스 이미지 크기 | 832MB | 746B |
 
 
 <br />
@@ -105,10 +134,17 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 
 최종 이미지에 Gradle, JDK, 소스코드 미포함
 
+
+<img width="2234" height="498" alt="image" src="https://github.com/user-attachments/assets/26acc4db-55d6-4de7-a297-88643ff4d062" />
+<img width="857" height="66" alt="image" src="https://github.com/user-attachments/assets/720d5378-447f-4c97-a564-4ac861aab851" />
+
+<br />
+
+
 | | Before | After |
 |--|--------|-------|
 | 이미지 크기 | | |
-| 최종 이미지 내용 | | |
+| 최종 이미지 내용 | 832MB | 247MB |
 
 
 <br />
@@ -130,10 +166,14 @@ docker-compose*
 Jenkinsfile
 ```
 
-| | Before | After |
-|--|--------|-------|
-| 빌드 컨텍스트 크기 | | |
-| 불필요한 캐시 무효화 | 발생 | 방지 |
+<img width="2000" height="402" alt="image" src="https://github.com/user-attachments/assets/10ee1117-d037-440d-8c62-28de700c448c" />
+
+<br/>
+
+<img width="120" height="480" alt="image" src="https://github.com/user-attachments/assets/67812937-1456-4794-bc76-838625f0d844" />
+
+
+멀티 스테이지 빌드를 진행한 경우와 이미지 용량 크기는 동일하나, **docker push 속도 27s 감소**
 
 
 <br />
@@ -149,9 +189,9 @@ Docker는 레이어 변경 시 이하 레이어를 전부 재실행
 # After:
 ```
 
-| | Before | After |
-|--|--------|-------|
-| 소스 변경 시 재빌드 | | |
+<img width="2238" height="476" alt="image" src="https://github.com/user-attachments/assets/86e5a5bd-a66b-4012-9be6-037237314611" />
+
+코드 변경 없이 재빌드를 했을 때, 캐싱되어 있던 기존 레이어를 재사용하므로 **빌드 속도 약 30배 증가 (1m 32s -> 3s)**
 
 
 
@@ -272,28 +312,23 @@ docker run -d \
 
 | 단계 | 이미지 크기 | 재빌드 시간 | 개선 포인트 |
 |------|-----------|-----------|-----------|
-| Naive | - | - | 베이스라인 |
-| 베이스 이미지 교체 | - | - | 크기 감소 |
-| 멀티스테이지 빌드 | - | - | 크기 감소 |
-| .dockerignore | - | - | 컨텍스트 정리 |
-| 레이어 캐시 최적화 | - | - | 재빌드 속도 |
+| Naive | 832MB | 2m 39s | 베이스라인 |
+| 베이스 이미지 교체 | 746MB | 1m 36s | 크기 감소 |
+| 멀티스테이지 빌드 | 247MB | 1m 33s | 크기 감소 |
+| .dockerignore | 247MB | 1m 32s *(특이사항 : docker push 시간 : 20s)* | 컨텍스트 정리 |
+| 레이어 캐시 최적화 | 247MB | 3s | 재빌드 속도 |
 
 
 ### 최적화 전/후 핵심 수치
 
 | | Naive | 최종 최적화 | 개선율 |
 |--|-------|-----------|------|
-| 이미지 크기 | -MB | -MB | -%↓ |
-| 소스 변경 시 재빌드 | -분 | -초 | -%↓ |
-| 빌드 컨텍스트 크기 | -MB | -MB | -%↓ |
-
-> 빌드 완료 후 실제 수치로 채울 것
-
-
+| 이미지 크기 | -832MB | 247MB | 약 3.4%↓ |
+| 소스 변경 시 재빌드 | 2m 39s | 3s | 53%↓ |
 
 <br />
 
 ---
 
-## ‼️ 트러블 슈팅
+## ‼️ 트러블슈팅
 > 트러블 슈팅 작성
