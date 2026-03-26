@@ -1,6 +1,6 @@
 # 🐳 Docker 이미지 최적화
-> 빌드 속도/이미지 크기/운영 관점을 고려한 Docker 이미지 최적화 전략을 4단계로 적용하고
-> Jenkins CI/CD 파이프라인으로 단계별 수치를 자동 측정합니다.
+> 빌드 속도/이미지 크기를 고려한 Docker 이미지 최적화 전략을 4단계로 적용하고
+> Jenkins CI/CD 파이프라인으로 단계별 수치 자동 측정
 
 ## 👥 멤버
 
@@ -40,7 +40,7 @@ docker-optimization-project/
 
 ## 🚀 최적화 전략 — 4단계
 
-### 📌 최적화 전 (Naive)
+### 📌 최적화 전
 
 빌드 도구, 소스코드, JDK가 전부 최종 이미지에 포함된 상태
 
@@ -49,9 +49,11 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY . .
 RUN ./gradlew build -x test
-CMD ["java", "-jar", "build/libs/app.jar"]
+CMD ["java", "-jar", "build/libs/docker-optimization-0.0.1-SNAPSHOT.jar"]
 ```
 
+
+## 📦 이미지 크기 최적화
 
 ### 1️⃣ 베이스 이미지 교체
 
@@ -65,7 +67,7 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 
 | | Before | After |
 |--|--------|-------|
-| 베이스 이미지 크기 |||
+| 베이스 이미지 크기 | | |
 
 
 ### 2️⃣ 멀티스테이지 빌드
@@ -73,17 +75,19 @@ JAR 실행에는 컴파일러(JDK)가 불필요 → JRE로 교체
 빌드 환경과 실행 환경을 분리 → 최종 이미지에 JAR 파일만 포함
 
 ```dockerfile
-
-
+ 
+ 
 ```
 
-최종 이미지에 Gradle · JDK · 소스코드 미포함
+최종 이미지에 Gradle, JDK, 소스코드 미포함
 
 | | Before | After |
-|--|-------|------|
-| 이미지 크기 |  |  |
-| 최종 이미지 내용 |  |  |
+|--|--------|-------|
+| 이미지 크기 | | |
+| 최종 이미지 내용 | | |
 
+
+## ⚡ 빌드 속도 최적화
 
 ### 3️⃣ .dockerignore 추가
 
@@ -101,10 +105,9 @@ Jenkinsfile
 ```
 
 | | Before | After |
-|--|------|----|
-| 빌드 컨텍스트 크기 |  |  |
+|--|--------|-------|
+| 빌드 컨텍스트 크기 | | |
 | 불필요한 캐시 무효화 | 발생 | 방지 |
-
 
 ### 4️⃣ 레이어 캐시 최적화
 
@@ -112,16 +115,14 @@ Docker는 레이어 변경 시 이하 레이어를 전부 재실행
 → 변경 빈도가 낮은 의존성을 위쪽, 소스코드를 아래쪽 레이어에 배치
 
 ```dockerfile
-# Before: =
-
+# Before:
  
-# After: 
-
+# After:
 ```
 
 | | Before | After |
-|--|------|------|
-| 소스 변경 시 재빌드 |  |  |
+|--|--------|-------|
+| 소스 변경 시 재빌드 | | |
 
 
 ## 🔧 Jenkins CI/CD 파이프라인
@@ -133,14 +134,14 @@ GitHub Push (webhook)
         │
         ▼
 ┌───────────────────────────────────────────────────┐
-│                  Jenkins Pipeline                  │
+│                  Jenkins Pipeline                 │
 │                                                   │
-│  Stage 1. Checkout    소스코드 체크아웃             │
-│  Stage 2. Build JAR   Gradle 빌드 → JAR 생성       │
-│  Stage 3. Docker Build  이미지 빌드 + 크기/시간 측정│
-│  Stage 4. Docker Push   Docker Hub push            │
-│  Stage 5. Deploy      컨테이너 실행                 │
-│  Stage 6. Cleanup     불필요한 이미지 정리           │
+│  Stage 1. Checkout    소스코드 체크아웃               │
+│  Stage 2. Build JAR   Gradle 빌드 → JAR 생성        │
+│  Stage 3. Docker Build  이미지 빌드 + 크기/시간 측정    │
+│  Stage 4. Docker Push   Docker Hub push           │
+│  Stage 5. Deploy      컨테이너 실행                  │
+│  Stage 6. Cleanup     불필요한 이미지 정리             │
 └───────────────────────────────────────────────────┘
 ```
 
