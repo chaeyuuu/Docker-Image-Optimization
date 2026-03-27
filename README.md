@@ -347,3 +347,28 @@ docker exec -u root jenkins chmod -R 777 /var/jenkins_home/workspace/docker-opti
  
 # 3. Jenkins에서 다시 빌드 실행
 ```
+
+### 2. Jenkins 컨테이너 내부에서 Docker CLI 사용 불가
+
+**해결**
+ 
+```bash
+# 도커 소켓 마운트를 통한 해결
+docker run -d \
+  --name jenkins \
+  -p 8080:8080 \
+  -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins/jenkins:lts
+```
+
+### 3. Jenkins 컨테이너 내부에서 Docker CLI 접근 거부
+
+**해결**
+ 
+```bash
+# Jenkins 컨테이너 안에서 GID의 그룹을 만들고 Jenkins 사용자를 추가
+groupadd -g <docker-sock-gid> docker
+usermod -aG docker jenkins
+```
