@@ -119,7 +119,7 @@ FROM eclipse-temurin:17-jdk-alpine  # Alpine 기반
 
 ### 2️⃣ 멀티스테이지 빌드
 
-빌드 환경과 실행 환경을 분리 → 최종 이미지에 JAR 파일만 포함
+빌드 환경과 실행 환경을 분리하여 최종 이미지에 JAR 파일만 포함
 
 ```dockerfile
 FROM eclipse-temurin:17-jdk-alpine AS builder
@@ -185,8 +185,8 @@ Jenkinsfile
 
 ### 4️⃣ 레이어 캐시 최적화
 
-Docker는 레이어 변경 시 이하 레이어를 전부 재실행
-→ 변경 빈도가 낮은 의존성을 위쪽, 소스코드를 아래쪽 레이어에 배치
+- Docker는 레이어 변경 시 이하 레이어를 전부 재실행
+- 변경 빈도가 낮은 의존성을 위쪽, 소스코드를 아래쪽 레이어에 배치
 
 ```dockerfile
 # Before: 소스 변경 시 의존성 전체 재다운로드
