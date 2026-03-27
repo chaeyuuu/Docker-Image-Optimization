@@ -150,7 +150,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 |--|--------|-------|
 | 이미지 크기 | 832MB | 247MB |
 
-### 최적화 방법에 따른 이미지 크기 비교
+### ✅ 최적화 방법에 따른 이미지 크기 비교
 ![fileSize](https://github.com/user-attachments/assets/5677fd33-f6fa-40ed-b922-a16eb19b87bc)
 
 
