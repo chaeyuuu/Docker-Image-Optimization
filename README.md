@@ -10,7 +10,6 @@
 - [⚙️ 기술 스택](#️-기술-스택)
 - [🗂️ 프로젝트 구조](#️-프로젝트-구조)
 - [🚀 최적화 전략 — 4단계](#-최적화-전략--4단계)
-- [🔧 Jenkins CI/CD 파이프라인](#-jenkins-cicd-파이프라인)
 - [🏁 결론](#-결론)
 - [‼️ 트러블슈팅](#️-트러블슈팅)
 
@@ -212,28 +211,7 @@ RUN ./gradlew bootJar --no-daemon -x test
 
 #### ➡️ 코드 변경 없이 재빌드를 했을 때, 캐싱되어 있던 기존 레이어를 재사용하므로 **빌드 속도 약 30배 증가 (1m 32s -> 3s)**
 
-<br />
-
-
-## 🔧 Jenkins CI/CD 파이프라인
-
-### ✔️ 파이프라인 흐름
-
-```
-GitHub Push (webhook)
-        │
-        ▼
-┌───────────────────────────────────────────────────┐
-│                  Jenkins Pipeline                 │
-│                                                   │
-│  Stage 1. Checkout    소스코드 체크아웃               │
-│  Stage 2. Build JAR   Gradle 빌드 → JAR 생성        │
-│  Stage 3. Docker Build  이미지 빌드 + 크기/시간 측정    │
-│  Stage 4. Docker Push   Docker Hub push           │
-│  Stage 5. Deploy      컨테이너 실행                  │
-│  Stage 6. Cleanup     불필요한 이미지 정리             │
-└───────────────────────────────────────────────────┘
-```
+<br 
 
 
 
