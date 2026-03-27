@@ -153,7 +153,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 <br />
 
-## ⚡ 빌드 속도 최적화
+## ⚡ 속도 최적화
 
 ### 3️⃣ .dockerignore 추가
 
